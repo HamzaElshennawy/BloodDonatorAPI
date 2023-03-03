@@ -4,37 +4,34 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 using Npgsql;
+using System.Text.Json.Nodes;
 
 namespace BloodDonatorAPI.Controllers
 {
-    [Route("[controller]")]
+    [Route("/API/[controller]")]
     [ApiController]
     public class SignInRequest : ControllerBase
     {
-        User MainUser { get; set; }
+        User? MainUser { get; set; }
 
-        [HttpPost]
-        public IActionResult Post(string username, string password)
-        {
+        
+        [HttpGet]
+        public IActionResult Get(string username, string password) {
             return Ok(GetDataFromServer(username, password));
         }
-        public string GetDataFromServer(string user,string pass)
-        {
+
+        
+        public string GetDataFromServer(string user, string pass) {
             MainUser = new();
             string database = "azure_sys";
             string password = "Hamzamohammed159";
             string ConnectionString = $"Server=blooddonatorserver.postgres.database.azure.com;Database={database};Port=5432;User Id=Elshennawy@blooddonatorserver;Password={password};";
-            try
-            {
-
-                using (var conn = new NpgsqlConnection(ConnectionString))
-                {
+            try {
+                using (var conn = new NpgsqlConnection(ConnectionString)) {
                     conn.Open();
-                    using (var command = new NpgsqlCommand($"SELECT * FROM \"Users\" WHERE \"UserName\" = '{user}' AND \"UPassword\" = '{pass}'", conn))
-                    {
+                    using (var command = new NpgsqlCommand($"SELECT * FROM \"Users\" WHERE \"UserName\" = '{user}' AND \"UPassword\" = '{pass}'", conn)) {
                         var result = command.ExecuteReader();
-                        while (result.Read())
-                        {
+                        while (result.Read()) {
                             MainUser.id = result.GetString(0);
                             MainUser.UserName = result.GetString(1);
                             MainUser.Password = result.GetString(2);
@@ -52,11 +49,10 @@ namespace BloodDonatorAPI.Controllers
                     }
                 }
                 var UserToJson = JsonConvert.SerializeObject(MainUser);
-                return UserToJson;
+                return UserToJson ;
             }
-            catch (Exception ex)
-            {
-                return ex.Message;
+            catch (Exception) {
+                return "{\"false\":\"false\"}";
             }
         }
     }
