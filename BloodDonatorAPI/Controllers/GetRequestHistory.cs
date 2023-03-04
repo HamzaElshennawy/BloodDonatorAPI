@@ -28,8 +28,9 @@ namespace BloodDonatorAPI.Controllers {
                             RequestType = result.GetInt32(2),
                             RequestBody = result.GetString(3),
                             RequestDate = result.GetString(4),
-                            Status = result.GetString(5)
-                        });
+                            Status = result.GetString(5),
+                            UserID = id
+                        }) ;
                     }
                 }
             }
