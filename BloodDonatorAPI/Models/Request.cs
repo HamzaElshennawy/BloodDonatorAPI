@@ -15,7 +15,7 @@ namespace BloodDonatorAPI.Models {
         [JsonProperty("RequestDate")]
         public string RequestDate { get; set; }
 
-        [JsonProperty("Name")]
+        [JsonProperty("UserID")]
         public string UserID { get; set; }
 
         [JsonProperty("Status")]
